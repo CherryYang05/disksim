@@ -96,8 +96,9 @@
  * holders.
  */
 
-#include "disksim_global.h"
 #include "disksim_stat.h"
+
+#include "disksim_global.h"
 
 int stat_get_count(statgen *statptr) {
     return (statptr->count);
@@ -126,7 +127,6 @@ void stat_update(statgen *statptr, double value) {
     int equals = statptr->equals;
     int buckets = statptr->distbrks[(DISTSIZE - 1)];
     int intval = (int)(value * (double)statptr->scale);
-
 
     // ******************************
     // static int cnt = 0;
@@ -304,10 +304,10 @@ void stat_print_file(statgen *statptr, char *identstr, FILE *outfile) {
 
 /**
  * @brief 在 outv 文件中打印结果
- * 
- * @param statset 
- * @param statcnt 
- * @param identstr 
+ *
+ * @param statset
+ * @param statcnt
+ * @param identstr
  */
 void stat_print_set(statgen **statset, int statcnt, char *identstr) {
     int i, j;

@@ -1,30 +1,29 @@
-disksim_stat.o: disksim_stat.c /usr/include/stdc-predef.h \
- disksim_global.h disksim_rand48.h disksim_malloc.h disksim_bitstring.h \
- inline.h /usr/include/sys/types.h /usr/include/features.h \
- /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h \
- /usr/include/bits/long-double.h /usr/include/gnu/stubs.h \
- /usr/include/gnu/stubs-64.h /usr/include/bits/types.h \
- /usr/include/bits/timesize.h /usr/include/bits/typesizes.h \
- /usr/include/bits/time64.h /usr/include/bits/types/clock_t.h \
- /usr/include/bits/types/clockid_t.h /usr/include/bits/types/time_t.h \
- /usr/include/bits/types/timer_t.h \
+disksim_stat.o: disksim_stat.c /usr/include/stdc-predef.h disksim_stat.h \
+ /usr/include/stdio.h /usr/include/bits/libc-header-start.h \
+ /usr/include/features.h /usr/include/sys/cdefs.h \
+ /usr/include/bits/wordsize.h /usr/include/bits/long-double.h \
+ /usr/include/gnu/stubs.h /usr/include/gnu/stubs-64.h \
  /opt/gcc-11.2.0/lib/gcc/x86_64-pc-linux-gnu/11.2.0/include/stddef.h \
- /usr/include/bits/stdint-intn.h /usr/include/endian.h \
- /usr/include/bits/endian.h /usr/include/bits/byteswap.h \
- /usr/include/bits/uintn-identity.h /usr/include/sys/select.h \
- /usr/include/bits/select.h /usr/include/bits/types/sigset_t.h \
- /usr/include/bits/types/__sigset_t.h \
- /usr/include/bits/types/struct_timeval.h \
- /usr/include/bits/types/struct_timespec.h \
- /usr/include/bits/pthreadtypes.h /usr/include/bits/thread-shared-types.h \
- /usr/include/bits/pthreadtypes-arch.h /usr/include/stdio.h \
- /usr/include/bits/libc-header-start.h \
  /opt/gcc-11.2.0/lib/gcc/x86_64-pc-linux-gnu/11.2.0/include/stdarg.h \
+ /usr/include/bits/types.h /usr/include/bits/timesize.h \
+ /usr/include/bits/typesizes.h /usr/include/bits/time64.h \
  /usr/include/bits/types/__fpos_t.h /usr/include/bits/types/__mbstate_t.h \
  /usr/include/bits/types/__fpos64_t.h /usr/include/bits/types/__FILE.h \
  /usr/include/bits/types/FILE.h /usr/include/bits/types/struct_FILE.h \
  /usr/include/bits/types/cookie_io_functions_t.h \
  /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
+ disksim_global.h disksim_rand48.h disksim_malloc.h disksim_bitstring.h \
+ inline.h /usr/include/sys/types.h /usr/include/bits/types/clock_t.h \
+ /usr/include/bits/types/clockid_t.h /usr/include/bits/types/time_t.h \
+ /usr/include/bits/types/timer_t.h /usr/include/bits/stdint-intn.h \
+ /usr/include/endian.h /usr/include/bits/endian.h \
+ /usr/include/bits/byteswap.h /usr/include/bits/uintn-identity.h \
+ /usr/include/sys/select.h /usr/include/bits/select.h \
+ /usr/include/bits/types/sigset_t.h /usr/include/bits/types/__sigset_t.h \
+ /usr/include/bits/types/struct_timeval.h \
+ /usr/include/bits/types/struct_timespec.h \
+ /usr/include/bits/pthreadtypes.h /usr/include/bits/thread-shared-types.h \
+ /usr/include/bits/pthreadtypes-arch.h \
  /opt/gcc-11.2.0/include/c++/11.2.0/stdlib.h \
  /opt/gcc-11.2.0/include/c++/11.2.0/cstdlib \
  /opt/gcc-11.2.0/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/c++config.h \
@@ -79,4 +78,4 @@ disksim_stat.o: disksim_stat.c /usr/include/stdc-predef.h \
  /usr/include/time.h /usr/include/bits/time.h /usr/include/bits/timex.h \
  /usr/include/bits/types/struct_tm.h \
  /usr/include/bits/types/struct_itimerspec.h disksim_assertlib.h \
- /usr/include/assert.h disksim_reqflags.h disksim_stat.h
+ /usr/include/assert.h disksim_reqflags.h

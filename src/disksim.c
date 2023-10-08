@@ -1160,6 +1160,10 @@ void disksim_restore_from_checkpoint(char *filename) {
     setcallbacks();
 }
 
+/**
+ * @brief 开始执行模拟
+ * 
+ */
 void disksim_run_simulation() {
     disksim->event_count = 0;
 
