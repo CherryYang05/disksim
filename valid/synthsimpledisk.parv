@@ -103,7 +103,13 @@ Print stats =  1
 } # end of CTLR0 spec
 
 disksim_simpledisk SD0 {
-     Block count =  1000000000,
+     Tape number tracks = 10006,
+     Tape block tracks = 52397,
+     Read rate = 0.00103,
+     Write rate = 0.00103,
+     Spoolrate = 0.03,
+     Block count =  524288000,
+     Head time = 1,
      Access time =  1.0,
      Command overhead =  0.5,
      Bus transaction latency =  0.0,

@@ -471,7 +471,7 @@ void iodriver_access_complete(int iodriverno, intr_event *intrp) {
     outputFile = fopen("driver_response.txt", "a+");
     fprintf(outputFile, "%f ,opid %d, blkno %d, bcount %d %d\n", req->responsetime, req->opid, req->blkno, req->bcount, req->flags);
     fclose(outputFile);
-    gettimeofday(&endTime, NULL);
+    gettimeofday(&endTime, NULL); 
     time_fliter->print_response += (((double)endTime.tv_sec * 1000 + (double)endTime.tv_usec / 1000) - ((double)startTime.tv_sec * 1000 + (double)startTime.tv_usec / 1000));
     // printf("print time = %lf\n", time_fliter->print_response);
 

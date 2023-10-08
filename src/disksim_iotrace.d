@@ -82,33 +82,7 @@ disksim_iotrace.o: disksim_iotrace.c /usr/include/stdc-predef.h config.h \
  /usr/include/bits/types/struct_tm.h \
  /usr/include/bits/types/struct_itimerspec.h disksim_assertlib.h \
  /usr/include/assert.h disksim_reqflags.h disksim_iotrace.h \
- disksim_hptrace.h disksim_simresult.h disksim_disk.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/map \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/stl_tree.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/allocator.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/c++allocator.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/ext/new_allocator.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/new \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/exception.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/memoryfwd.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/stl_function.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/backward/binders.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/ext/alloc_traits.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/alloc_traits.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/stl_construct.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/ext/aligned_buffer.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/node_handle.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/stl_map.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/initializer_list \
- /opt/gcc-11.2.0/include/c++/11.2.0/tuple \
- /opt/gcc-11.2.0/include/c++/11.2.0/utility \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/stl_relops.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/array \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/range_access.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/uses_allocator.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/invoke.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/stl_multimap.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/erase_if.h disksim_stat.h \
+ disksim_hptrace.h disksim_simresult.h disksim_disk.h disksim_stat.h \
  disksim_iosim.h disksim_ioface.h disksim_device.h disksim_orgface.h \
  disksim_iodriver.h disksim_bus.h disksim_controller.h disksim_ioqueue.h \
  ../diskmodel/include/diskmodel/dm.h \

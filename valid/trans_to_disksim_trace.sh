@@ -15,8 +15,8 @@
 # disksim 格式的 trace 各列含义如下：
 # Col 1: 读写(RW)
 # Col 2: Hit(暂时固定为 Hit)
-# Col 3: 偏移量(offset)
-# Col 4: 长度(length，单位：块，即 512B)
+# Col 3: 偏移量(offset，单位：扇区)
+# Col 4: 长度(length，单位：块，扇区，即 512B)
 # Col 5: 服务时间(servtime，即完成该次请求的总时间)
 # Col 6: 时间戳(源码中的字段名为 nextinter)
 

@@ -119,7 +119,7 @@ disksim_ctlr CTLR0 {
  Cache = disksim_cachedev { 
      Cache block size = 8,
      Cache set assoc = 512,
-     Cache size = 4096,
+     Cache size = 4096,     # 50G
      Cache policy = 1, 
      Cache device = cache_disk, 
      Cached device = disk,        
@@ -188,7 +188,7 @@ ssdmodel_ssd SSD {
 
      Bulk sector transfer time =  0,
 
-     Flash chip elements = 8,
+     Flash chip elements = 64,      # chip 数量
 
      Page size = 8,
 
