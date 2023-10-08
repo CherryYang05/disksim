@@ -91,33 +91,8 @@ ssdmodel_ssd_param.o: ssdmodel_ssd_param.c /usr/include/stdc-predef.h \
  ../../src//config.h ../../libddbg/include/libddbg/libddbg.h \
  ../../src//disksim_bus.h ../../src//disksim_controller.h \
  ../../src//disksim_stat.h ../../src//disksim_ioqueue.h \
- ../../src//disksim_disk.h /opt/gcc-11.2.0/include/c++/11.2.0/map \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/stl_tree.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/allocator.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/c++allocator.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/ext/new_allocator.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/new \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/exception.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/memoryfwd.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/stl_function.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/backward/binders.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/ext/alloc_traits.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/alloc_traits.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/stl_construct.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/ext/aligned_buffer.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/node_handle.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/stl_map.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/initializer_list \
- /opt/gcc-11.2.0/include/c++/11.2.0/tuple \
- /opt/gcc-11.2.0/include/c++/11.2.0/utility \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/stl_relops.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/array \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/range_access.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/uses_allocator.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/invoke.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/stl_multimap.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/erase_if.h \
- ../../src//disksim_ioqueue.h ../../diskmodel/include/diskmodel/dm.h \
+ ../../src//disksim_disk.h ../../src//disksim_ioqueue.h \
+ ../../diskmodel/include/diskmodel/dm.h \
  ../../diskmodel/include/diskmodel/dm_types.h /usr/include/inttypes.h \
  /opt/gcc-11.2.0/lib/gcc/x86_64-pc-linux-gnu/11.2.0/include/stdint.h \
  /usr/include/stdint.h /usr/include/bits/wchar.h \

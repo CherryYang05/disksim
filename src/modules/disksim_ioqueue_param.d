@@ -16,15 +16,17 @@ disksim_ioqueue_param.o: disksim_ioqueue_param.c \
  /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
  ../../libparam/include/libparam/bitvector.h /usr/include/string.h \
  /usr/include/bits/types/locale_t.h /usr/include/bits/types/__locale_t.h \
- /usr/include/strings.h ../disksim_ioqueue.h ../disksim_global.h \
- ../disksim_rand48.h ../disksim_malloc.h ../disksim_bitstring.h \
- ../inline.h /usr/include/sys/types.h /usr/include/bits/types/clock_t.h \
- /usr/include/bits/types/clockid_t.h /usr/include/bits/types/time_t.h \
- /usr/include/bits/types/timer_t.h /usr/include/bits/stdint-intn.h \
- /usr/include/endian.h /usr/include/bits/endian.h \
- /usr/include/bits/byteswap.h /usr/include/bits/uintn-identity.h \
- /usr/include/sys/select.h /usr/include/bits/select.h \
- /usr/include/bits/types/sigset_t.h /usr/include/bits/types/__sigset_t.h \
+ /usr/include/strings.h ../disksim_ioqueue.h ../config.h ../inline.h \
+ ../../libddbg/include/libddbg/libddbg.h ../disksim_disk.h \
+ ../disksim_stat.h ../disksim_global.h ../disksim_rand48.h \
+ ../disksim_malloc.h ../disksim_bitstring.h /usr/include/sys/types.h \
+ /usr/include/bits/types/clock_t.h /usr/include/bits/types/clockid_t.h \
+ /usr/include/bits/types/time_t.h /usr/include/bits/types/timer_t.h \
+ /usr/include/bits/stdint-intn.h /usr/include/endian.h \
+ /usr/include/bits/endian.h /usr/include/bits/byteswap.h \
+ /usr/include/bits/uintn-identity.h /usr/include/sys/select.h \
+ /usr/include/bits/select.h /usr/include/bits/types/sigset_t.h \
+ /usr/include/bits/types/__sigset_t.h \
  /usr/include/bits/types/struct_timeval.h \
  /usr/include/bits/types/struct_timespec.h \
  /usr/include/bits/pthreadtypes.h /usr/include/bits/thread-shared-types.h \
@@ -84,35 +86,8 @@ disksim_ioqueue_param.o: disksim_ioqueue_param.c \
  /usr/include/bits/types/struct_itimerspec.h ../disksim_assertlib.h \
  /usr/include/assert.h ../disksim_reqflags.h ../disksim_iosim.h \
  ../disksim_ioface.h ../disksim_device.h ../disksim_orgface.h \
- ../disksim_iotrace.h ../disksim_stat.h ../disksim_iodriver.h ../config.h \
- ../../libddbg/include/libddbg/libddbg.h ../disksim_bus.h \
- ../disksim_controller.h ../disksim_disk.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/map \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/stl_tree.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/allocator.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/x86_64-pc-linux-gnu/bits/c++allocator.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/ext/new_allocator.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/new \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/exception.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/memoryfwd.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/stl_function.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/backward/binders.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/ext/alloc_traits.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/alloc_traits.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/stl_construct.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/ext/aligned_buffer.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/node_handle.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/stl_map.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/initializer_list \
- /opt/gcc-11.2.0/include/c++/11.2.0/tuple \
- /opt/gcc-11.2.0/include/c++/11.2.0/utility \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/stl_relops.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/array \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/range_access.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/uses_allocator.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/invoke.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/stl_multimap.h \
- /opt/gcc-11.2.0/include/c++/11.2.0/bits/erase_if.h ../disksim_ioqueue.h \
+ ../disksim_iotrace.h ../disksim_iodriver.h ../disksim_bus.h \
+ ../disksim_controller.h ../disksim_ioqueue.h \
  ../../diskmodel/include/diskmodel/dm.h \
  ../../diskmodel/include/diskmodel/dm_types.h /usr/include/inttypes.h \
  /opt/gcc-11.2.0/lib/gcc/x86_64-pc-linux-gnu/11.2.0/include/stdint.h \

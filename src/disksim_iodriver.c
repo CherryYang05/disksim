@@ -98,6 +98,9 @@
 
 #include "disksim_iodriver.h"
 
+#include <sys/time.h>
+#include <unistd.h>
+
 #include "config.h"
 #include "disksim_bus.h"
 #include "disksim_controller.h"
@@ -110,8 +113,6 @@
 #include "disksim_simresult.h"
 #include "disksim_stat.h"
 #include "modules/modules.h"
-#include <sys/time.h>
-#include <unistd.h>
 
 /* read-only globals used during readparams phase */
 static char *statdesc_emptyqueue = "Empty queue delay";
@@ -381,8 +382,8 @@ static void iodriver_add_to_intrp_eventlist(intr_event *intrp, event *curr, doub
     }
 }
 
-static struct timeval  startTime;
-static struct timeval  endTime;
+static struct timeval startTime;
+static struct timeval endTime;
 void iodriver_access_complete(int iodriverno, intr_event *intrp) {
     int i;
     int numreqs;
@@ -471,7 +472,7 @@ void iodriver_access_complete(int iodriverno, intr_event *intrp) {
     outputFile = fopen("driver_response.txt", "a+");
     fprintf(outputFile, "%f ,opid %d, blkno %d, bcount %d %d\n", req->responsetime, req->opid, req->blkno, req->bcount, req->flags);
     fclose(outputFile);
-    gettimeofday(&endTime, NULL); 
+    gettimeofday(&endTime, NULL);
     time_fliter->print_response += (((double)endTime.tv_sec * 1000 + (double)endTime.tv_usec / 1000) - ((double)startTime.tv_sec * 1000 + (double)startTime.tv_usec / 1000));
     // printf("print time = %lf\n", time_fliter->print_response);
 
@@ -483,6 +484,7 @@ void iodriver_access_complete(int iodriverno, intr_event *intrp) {
     if (disksim->traceformat == VALIDATE) {
         tmp = (ioreq_event *)getfromextraq();
         io_validate_do_stats1();
+        // Cherry: 读取下一条 trace
         tmp = iotrace_validate_get_ioreq_event(disksim->iotracefile, tmp);
         if (tmp) {
             io_validate_do_stats2(tmp);
@@ -622,6 +624,12 @@ fprintf (outputfile, "%f, Responding to device - cause = %d, blkno %lld\n", simt
     iodriver_check_c700_based_status(iodrivers[iodriverno], devno, cause, IO_INTERRUPT_COMPLETE, 0);
 }
 
+/**
+ * @brief 一个请求执行完成
+ * 
+ * @param iodriverno 
+ * @param intrp 
+ */
 void iodriver_interrupt_complete(int iodriverno, intr_event *intrp) {
     /*
     fprintf (outputfile, "%f, Interrupt completing - cause = %d, blkno %d\n", simtime, ((ioreq_event *) intrp->infoptr)->cause, ((ioreq_event *) intrp->infoptr)->blkno);
