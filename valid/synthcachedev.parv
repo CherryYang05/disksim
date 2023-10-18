@@ -120,6 +120,7 @@ disksim_ctlr CTLR0 {
      Cache block size = 8,
      Cache set assoc = 512,
      Cache size = 16384,
+     Cache policy = 1, 
      Cache device = cache_disk, 
      Cached device = disk,        
      Max request size = 512,

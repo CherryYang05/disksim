@@ -57,7 +57,7 @@
 #include "disksim_disk.h"
 #include "disksim_global.h"
 #include "disksim_iosim.h"
-#include "disksim_simpledisk.h"
+#include "disksim_tape.h"
 // #include "memsmodel/mems_global.h"
 // #include "memsmodel/mems_disksim.h"
 #include "config.h"

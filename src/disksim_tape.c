@@ -96,7 +96,7 @@
  * holders.
  */
 
-#include "disksim_simpledisk.h"
+#include "disksim_tape.h"
 
 #include "modules/disksim_simpledisk_param.h"
 
