@@ -265,7 +265,7 @@ void iodriver_schedule(int iodriverno, ioreq_event *curr) {
          }
       }*/
 
-        // 请求进行切块
+        // Cherry: 请求进行切块
         if ((ctl->maxreqsize) && (curr->bcount > ctl->maxreqsize || curr->blkno % ctl->maxreqsize != 0)) {
             ioreq_event *totalreq = ioreq_copy(curr);
             int tmp = (curr->blkno + ctl->maxreqsize) / ctl->maxreqsize * ctl->maxreqsize;

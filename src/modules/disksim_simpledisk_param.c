@@ -1,6 +1,6 @@
 #include "disksim_simpledisk_param.h"
 #include <libparam/bitvector.h>
-#include "../disksim_simpledisk.h"
+#include "../disksim_tape.h"
 static int
 DISKSIM_SIMPLEDISK_SCHEDULER_depend (char *bv)
 {

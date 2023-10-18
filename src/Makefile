@@ -98,7 +98,7 @@ DISKSIM_SRC = disksim.c disksim_intr.c disksim_pfsim.c \
 	disksim_diskcache.c \
 	disksim_statload.c disksim_stat.c disksim_rand48.c disksim_malloc.c \
 	disksim_cache.c disksim_cachemem.c disksim_cachedev.c \
-	disksim_simpledisk.c disksim_device.c \
+	disksim_tape.c disksim_device.c \
 	disksim_loadparams.c disksim_simresult.c\
 	raw_layout.c
 
