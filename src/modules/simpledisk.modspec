@@ -31,7 +31,7 @@
 
 
 MODULE simpledisk
-HEADER \#include "../disksim_simpledisk.h"
+HEADER \#include "../disksim_tape.h"
 RESTYPE struct simpledisk *
 PROTO struct simpledisk *disksim_simpledisk_loadparams(struct lp_block *b);
 PROTO struct ioq *disksim_ioqueue_loadparams(struct lp_block *b, int printqueuestats, int printcritstats, int printidlestats, int printintarrstats, int printsizestats);

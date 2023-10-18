@@ -173,7 +173,7 @@ ssdmodel_ssd SSD {
 
      Bulk sector transfer time =  0,
 
-     Flash chip elements = 8,
+     Flash chip elements = 64,
 
      Page size = 8,
 

@@ -205,7 +205,7 @@ void io_internal_event(ioreq_event *curr) {
 fprintf (outputfile, "%f: io_internal_event entered with event type %d, %f\n", curr->time, curr->type, simtime);
 */
 #endif
-
+    // Cherry: 事件划分
     switch (curr->type) {
         case IO_REQUEST_ARRIVE:
             iodriver_request(0, curr);

@@ -240,10 +240,10 @@ ioreq_event *iotrace_validate_get_ioreq_event(FILE *tracefile, ioreq_event *new_
     if (sscanf(line, "%c %s %d %d %lf %lf\n",
                &rw,
                validate_buffaction,
-               &new_event->blkno,
-               &new_event->bcount,
-               &servtime,
-               &validate_nextinter) != 6) {
+               &new_event->blkno,       // 单位：扇区
+               &new_event->bcount,      // 单位：扇区
+               &servtime,               // 服务时间（运行时间，单位 ms）
+               &validate_nextinter) != 6) { // 距离下一个 trace 的时间间隔，单位 ms
         fprintf(stderr, "Wrong number of arguments for I/O trace event type\n");
         ddbg_assert(0);
     }
@@ -260,7 +260,7 @@ ioreq_event *iotrace_validate_get_ioreq_event(FILE *tracefile, ioreq_event *new_
     new_event->blkno = new_event->blkno % 17916240;
 
     
-    // ADD | Cherry: 一般情况 iodriver 只有一个，当跑异构的时候，numdevices = 2，设置 new_event->devno = 1
+    // ADD | Cherry: 跑单独设备时 iodriver 只有一个，当跑异构的时候，numdevices = 2，设置 new_event->devno = 1
     if (iodrivers[0]->numdevices == 2) {
         new_event->devno = 1;       // 跑异构
     } else if (iodrivers[0]->numdevices == 1) {
