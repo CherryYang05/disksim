@@ -145,7 +145,7 @@ static void logorg_streakstat(logorg *currlogorg, int diskno) {
         return;
     }
     if (last != currlogorg->actualnumdisks) {
-        stat_update(&devs[last].streakstats, (double)devs[last].curstreak);
+        stat_update(&devs[last].streakstats, (double)devs[last].curstreak, -1);
         devs[last].curstreak = 0;
     }
     currlogorg->lastdiskaccessed = diskno;
@@ -162,15 +162,15 @@ static void logorg_update_intarr_stats(logorg *currlogorg, ioreq_event *curr) {
     }
 
     tdiff = simtime - currlogorg->stat.lastarr;
-    stat_update(&currlogorg->stat.intarrstats, tdiff);
+    stat_update(&currlogorg->stat.intarrstats, tdiff, curr->flags);
     currlogorg->stat.lastarr = simtime;
     if (curr->flags & READ) {
         tdiff = simtime - currlogorg->stat.lastread;
-        stat_update(&currlogorg->stat.readintarrstats, tdiff);
+        stat_update(&currlogorg->stat.readintarrstats, tdiff, curr->flags);
         currlogorg->stat.lastread = simtime;
     } else {
         tdiff = simtime - currlogorg->stat.lastwrite;
-        stat_update(&currlogorg->stat.writeintarrstats, tdiff);
+        stat_update(&currlogorg->stat.writeintarrstats, tdiff, curr->flags);
         currlogorg->stat.lastwrite = simtime;
     }
 }
@@ -305,11 +305,11 @@ fprintf (outputfile, "Entering logorg_maprequest_update_stats - numreqs %d, orgd
     logorg_update_blocking_stats(currlogorg, curr);
 
     if (currlogorg->printsizestats) {
-        stat_update(&currlogorg->stat.sizestats, (double)curr->bcount);
+        stat_update(&currlogorg->stat.sizestats, (double)curr->bcount, curr->flags);
         if (curr->flags & READ) {
-            stat_update(&currlogorg->stat.readsizestats, (double)curr->bcount);
+            stat_update(&currlogorg->stat.readsizestats, (double)curr->bcount, curr->flags);
         } else {
-            stat_update(&currlogorg->stat.writesizestats, (double)curr->bcount);
+            stat_update(&currlogorg->stat.writesizestats, (double)curr->bcount, curr->flags);
         }
     }
     if (curr->flags & TIME_CRITICAL) {
@@ -319,7 +319,7 @@ fprintf (outputfile, "Entering logorg_maprequest_update_stats - numreqs %d, orgd
             currlogorg->stat.critwrites++;
         }
     }
-    stat_update(&currdev->localitystats, (double)(currdev->lastblkno - curr->blkno));
+    stat_update(&currdev->localitystats, (double)(currdev->lastblkno - curr->blkno), curr->flags);
     if ((curr->blkno > currdev->lastblkno) && (curr->blkno <= currdev->lastblkno2)) {
         if (curr->flags & READ) {
             currdev->intreads++;
@@ -371,7 +371,7 @@ fprintf (outputfile, "Midway through stats\n");
         currlogorg->stat.nonzeroouttime += simtime - currlogorg->stat.outtime;
     } else {
         tpass = simtime - currlogorg->stat.idlestart;
-        stat_update(&currlogorg->stat.idlestats, tpass);
+        stat_update(&currlogorg->stat.idlestats, tpass, curr->flags);
     }
     currlogorg->stat.idlestart = simtime;
     currlogorg->stat.runouttime += (double)currlogorg->stat.outstanding * (simtime - currlogorg->stat.outtime);
@@ -397,7 +397,7 @@ fprintf (outputfile, "Leaving maprequest_stats\n");
 }
 
 static void logorg_mapcomplete_update_stats(logorg *currlogorg, ioreq_event *curr, outstand *req) {
-    stat_update(&currlogorg->stat.resptimestats, (simtime - req->arrtime));
+    stat_update(&currlogorg->stat.resptimestats, (simtime - req->arrtime), curr->flags);
     currlogorg->stat.nonzeroouttime += simtime - currlogorg->stat.outtime;
     currlogorg->stat.runouttime += currlogorg->stat.outstanding * (simtime - currlogorg->stat.outtime);
     currlogorg->stat.outstanding--;
@@ -1204,7 +1204,7 @@ void logorg_cleanstats(logorg **logorgs, int numlogorgs) {
             logorgs[i]->stat.nonzeroouttime += simtime - logorgs[i]->stat.outtime;
         } else {
             tpass = simtime - logorgs[i]->stat.idlestart;
-            stat_update(&logorgs[i]->stat.idlestats, tpass);
+            stat_update(&logorgs[i]->stat.idlestats, tpass, -1);
         }
         logorgs[i]->stat.idlestart = simtime;
         logorgs[i]->stat.runouttime += (double)logorgs[i]->stat.outstanding * (simtime - logorgs[i]->stat.outtime);

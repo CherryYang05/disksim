@@ -277,7 +277,7 @@ void bus_event_arrive(ioreq_event *ptr) {
         struct bus *currbus = getbus(curr->busno);
         ASSERT(curr == currbus->arbwinner);
         currbus->arbwinner = NULL;
-        stat_update(&currbus->arbwaitstats, (simtime - curr->wait_start));
+        stat_update(&currbus->arbwaitstats, (simtime - curr->wait_start), ptr->flags);
     }
 
     switch (curr->devtype) {
@@ -401,7 +401,7 @@ int bus_ownership_get(int busno, int slotno, ioreq_event *curr) {
         addtointq((event *)tmp);
         currbus->state = BUS_OWNED;
         currbus->runidletime += simtime - currbus->lastowned;
-        stat_update(&currbus->busidlestats, (simtime - currbus->lastowned));
+        stat_update(&currbus->busidlestats, (simtime - currbus->lastowned), curr->flags);
     } else {
         tmp->slotno = slotno;
         /*
@@ -630,7 +630,7 @@ void bus_cleanstats() {
         struct bus *currbus = getbus(i);
         if (currbus->state == BUS_FREE) {
             currbus->runidletime += simtime - currbus->lastowned;
-            stat_update(&currbus->busidlestats, (simtime - currbus->lastowned));
+            stat_update(&currbus->busidlestats, (simtime - currbus->lastowned), -1);
         }
     }
 }

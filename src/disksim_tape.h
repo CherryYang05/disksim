@@ -114,12 +114,12 @@ typedef struct simpledisk {
     int tape_track;                 // 磁道相对距离
 
     int tape_number_of_tracks;      // 轨道数量
-    // int  tape_length_of_tracks;  //轨道长度
+    // int  tape_length_of_tracks;  // 轨道长度
     int tape_block_of_tracks;       // 轨道块数
     double readrate;                // 读速率
     double writerate;               // 写速率
-    double spoolrate;               // 磁头移动速率
-    double headtime;                // 磁头移动速率
+    double spoolrate;               // 磁头移动速率(沿着磁道方向)
+    double headtime;                // 磁头移动速率(垂直于磁道方向)
 
     int count;
     double headatimeCount;

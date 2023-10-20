@@ -462,23 +462,23 @@ static void ioqueue_update_arrival_stats(ioqueue *queue, ioreq_event *curr) {
     if (queue->printintarrstats) {
         tdiff = simtime - queue->lastarr;
         queue->lastarr = simtime;
-        stat_update(&queue->intarrstats, tdiff);
+        stat_update(&queue->intarrstats, tdiff, curr->flags);
         if (curr->flags & READ) {
             tdiff = simtime - queue->lastread;
             queue->lastread = simtime;
-            stat_update(&queue->readintarrstats, tdiff);
+            stat_update(&queue->readintarrstats, tdiff, curr->flags);
         } else {
             tdiff = simtime - queue->lastwrite;
             queue->lastwrite = simtime;
-            stat_update(&queue->writeintarrstats, tdiff);
+            stat_update(&queue->writeintarrstats, tdiff, curr->flags);
         }
     }
     if (queue->printsizestats) {
-        stat_update(&queue->reqsizestats, (double)curr->bcount);
+        stat_update(&queue->reqsizestats, (double)curr->bcount, curr->flags);
         if (curr->flags & READ) {
-            stat_update(&queue->readsizestats, (double)curr->bcount);
+            stat_update(&queue->readsizestats, (double)curr->bcount, curr->flags);
         } else {
-            stat_update(&queue->writesizestats, (double)curr->bcount);
+            stat_update(&queue->writesizestats, (double)curr->bcount, curr->flags);
         }
     }
     if (curr->blkno == queue->seqblkno) {
@@ -1129,13 +1129,13 @@ static iobuf *ioqueue_get_request_from_lbn_vscan_queue(subqueue *queue, int valu
             }
         }
         if (diff1 > diff2) {
-            stat_update(&queue->infopenalty, (double)(diff1 - diff2));
+            stat_update(&queue->infopenalty, (double)(diff1 - diff2), -1);
             /*
 fprintf (outputfile, "diff1 %d, diff2 %d, diffdiff %d\n", diff1, diff2, (diff1 - diff2));
              */
         } else if ((diff1 == diff2) && (diff1 == 0)) {
             if ((queue->optsurface == surface2) && (surface1 != surface2)) {
-                stat_update(&queue->infopenalty, (double)0);
+                stat_update(&queue->infopenalty, (double)0, -1);
             }
         }
     }
@@ -1364,13 +1364,13 @@ static iobuf *ioqueue_get_request_from_cyl_vscan_queue(subqueue *queue, int valu
         diff2 = diff3;
     }
     if (diff1 > diff2) {
-        stat_update(&queue->infopenalty, (double)(diff1 - diff2));
+        stat_update(&queue->infopenalty, (double)(diff1 - diff2), -1);
         /*
 fprintf (outputfile, "diff1 %d, diff2 %d, diffdiff %d, value %d\n", diff1, diff2, (diff1 - diff2), value);
          */
     } else if ((diff1 == diff2) && (diff1 == 0)) {
         if ((queue->optsurface == surface2) && (surface1 != surface2)) {
-            stat_update(&queue->infopenalty, (double)0);
+            stat_update(&queue->infopenalty, (double)0, -1);
         }
     }
     return (temp);
@@ -2780,7 +2780,7 @@ static ioreq_event *ioqueue_get_next_request_from_subqueue(subqueue *queue) {
                 }
             }
         case BATCH_FCFS:
-            stat_update(&queue->bigqueue->batchsizestats, temp->batch_size);
+            stat_update(&queue->bigqueue->batchsizestats, temp->batch_size, ret->flags);
             break;
         default:
             queue->lastblkno = temp->blkno + temp->totalsize - 1;
@@ -2793,11 +2793,11 @@ static ioreq_event *ioqueue_get_next_request_from_subqueue(subqueue *queue) {
         temp->starttime = simtime;
     }
     ret = temp->iolist;
-    stat_update(&queue->instqueuelen, (double)(queue->iobufcnt - queue->reqoutstanding));
+    stat_update(&queue->instqueuelen, (double)(queue->iobufcnt - queue->reqoutstanding), ret->flags);
     queue->reqoutstanding++;
     queue->numoutstanding += temp->reqcnt;
     while (ret) {
-        stat_update(&queue->qtimestats, (temp->starttime - ret->time));
+        stat_update(&queue->qtimestats, (temp->starttime - ret->time), ret->flags);
         ret = ret->next;
     }
     if (temp->iolist == NULL) {
@@ -2951,11 +2951,11 @@ static ioreq_event *ioqueue_get_specific_request_from_subqueue(subqueue *queue, 
         temp->starttime = simtime;
     }
     ret = temp->iolist;
-    stat_update(&queue->instqueuelen, (double)(queue->iobufcnt - queue->reqoutstanding));
+    stat_update(&queue->instqueuelen, (double)(queue->iobufcnt - queue->reqoutstanding), ret->flags);
     queue->reqoutstanding++;
     queue->numoutstanding += temp->reqcnt;
     while (ret) {
-        stat_update(&queue->qtimestats, (temp->starttime - ret->time));
+        stat_update(&queue->qtimestats, (temp->starttime - ret->time), ret->flags);
         ret = ret->next;
     }
     ASSERT(temp->iolist != NULL);
@@ -3060,26 +3060,26 @@ static ioreq_event *ioqueue_remove_completed_request(subqueue *queue, ioreq_even
         }
         queue->numoutstanding--;
         queue->numcomplete++;
-        stat_update(&queue->accstats, (simtime - tmp->starttime));
+        stat_update(&queue->accstats, (simtime - tmp->starttime), done->flags);
         disksim->lastphystime = simtime - tmp->starttime;
 
         // 每个请求的时间 = simtime - tmp->iob_un.time
-        stat_update(&queue->outtimestats, (simtime - tmp->iob_un.time));
+        stat_update(&queue->outtimestats, (simtime - tmp->iob_un.time), done->flags);
 
         // *********************
         // printf("Updated outtimestats with %f - simtime = %f, iob_un.time = %f\n", simtime - tmp->iob_un.time, simtime, tmp->iob_un.time);
         // *********************
         if (tmp->flags & READ) {
             if (tmp->flags & TIME_CRITICAL) {
-                stat_update(&queue->critreadstats, (simtime - tmp->iob_un.time));
+                stat_update(&queue->critreadstats, (simtime - tmp->iob_un.time), done->flags);
             } else {
-                stat_update(&queue->nocritreadstats, (simtime - tmp->iob_un.time));
+                stat_update(&queue->nocritreadstats, (simtime - tmp->iob_un.time), done->flags);
             }
         } else {
             if (tmp->flags & TIME_CRITICAL) {
-                stat_update(&queue->critwritestats, (simtime - tmp->iob_un.time));
+                stat_update(&queue->critwritestats, (simtime - tmp->iob_un.time), done->flags);
             } else {
-                stat_update(&queue->nocritwritestats, (simtime - tmp->iob_un.time));
+                stat_update(&queue->nocritwritestats, (simtime - tmp->iob_un.time), done->flags);
             }
         }
     } else {
@@ -3120,21 +3120,21 @@ static ioreq_event *ioqueue_remove_completed_request(subqueue *queue, ioreq_even
             }
             queue->numoutstanding--;
             queue->numcomplete++;
-            stat_update(&queue->accstats, (simtime - tmp->starttime));
+            stat_update(&queue->accstats, (simtime - tmp->starttime), done->flags);
             disksim->lastphystime = simtime - tmp->starttime;
-            stat_update(&queue->outtimestats, (simtime - tmp->iob_un.time));
+            stat_update(&queue->outtimestats, (simtime - tmp->iob_un.time), done->flags);
             // printf("Updated outtimestats with %f - simtime = %f\n", simtime - tmp->iob_un.time, simtime);
             if (tmp->flags & READ) {
                 if (tmp->flags & TIME_CRITICAL) {
-                    stat_update(&queue->critreadstats, (simtime - tmp->iob_un.time));
+                    stat_update(&queue->critreadstats, (simtime - tmp->iob_un.time), done->flags);
                 } else {
-                    stat_update(&queue->nocritreadstats, (simtime - tmp->iob_un.time));
+                    stat_update(&queue->nocritreadstats, (simtime - tmp->iob_un.time), done->flags);
                 }
             } else {
                 if (tmp->flags & TIME_CRITICAL) {
-                    stat_update(&queue->critwritestats, (simtime - tmp->iob_un.time));
+                    stat_update(&queue->critwritestats, (simtime - tmp->iob_un.time), done->flags);
                 } else {
-                    stat_update(&queue->nocritwritestats, (simtime - tmp->iob_un.time));
+                    stat_update(&queue->nocritwritestats, (simtime - tmp->iob_un.time), done->flags);
                 }
             }
             return (done);
@@ -3152,21 +3152,21 @@ static ioreq_event *ioqueue_remove_completed_request(subqueue *queue, ioreq_even
             // move this to add_request, when the batch is done
             // stat_update(&queue->bigqueue->batchsizestats, tmp->batch_size);
             while (trv) {
-                stat_update(&queue->accstats, (simtime - tmp->starttime));
+                stat_update(&queue->accstats, (simtime - tmp->starttime), done->flags);
                 disksim->lastphystime = simtime - tmp->starttime;
-                stat_update(&queue->outtimestats, (simtime - trv->time));
+                stat_update(&queue->outtimestats, (simtime - trv->time), done->flags);
                 // printf("Updated outtimestats with %f - simtime = %f\n", simtime - tmp->iob_un.time, simtime);
                 if (trv->flags & READ) {
                     if (trv->flags & TIME_CRITICAL) {
-                        stat_update(&queue->critreadstats, (simtime - trv->time));
+                        stat_update(&queue->critreadstats, (simtime - trv->time), done->flags);
                     } else {
-                        stat_update(&queue->nocritreadstats, (simtime - trv->time));
+                        stat_update(&queue->nocritreadstats, (simtime - trv->time), done->flags);
                     }
                 } else {
                     if (trv->flags & TIME_CRITICAL) {
-                        stat_update(&queue->critwritestats, (simtime - trv->time));
+                        stat_update(&queue->critwritestats, (simtime - trv->time), done->flags);
                     } else {
-                        stat_update(&queue->nocritwritestats, (simtime - trv->time));
+                        stat_update(&queue->nocritwritestats, (simtime - trv->time), done->flags);
                     }
                 }
                 trv = trv->next;
@@ -3407,7 +3407,7 @@ double ioqueue_add_new_request(ioqueue *queue, ioreq_event *new_event) {
     queue->maxreadlen = max(readlen, queue->maxreadlen);
     queue->maxwritelen = max((listlen - readlen), queue->maxwritelen);
     if (listlen == 1) {
-        stat_update(&queue->idlestats, (simtime - queue->idlestart));
+        stat_update(&queue->idlestats, (simtime - queue->idlestart), new_event->flags);
     }
     queue->idlestart = simtime;
     if (queue->idledetect) {
@@ -3902,7 +3902,7 @@ void ioqueue_cleanstats(ioqueue *queue) {
     ioqueue_update_subqueue_statistics(&queue->priority);
     if ((queue->base.listlen + queue->timeout.listlen + queue->priority.listlen) == 0) {
         tpass = simtime - queue->idlestart;
-        stat_update(&queue->idlestats, tpass);
+        stat_update(&queue->idlestats, tpass, -1);
     }
     queue->idlestart = simtime;
 }

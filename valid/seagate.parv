@@ -106,6 +106,7 @@ Print stats =  1
 } # end of CTLR0 spec
 
 source seagate.diskspecs
+# source ibm18es.diskspecs
 
 # component instantiation
 instantiate [ statfoo ] as Stats

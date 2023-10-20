@@ -116,9 +116,9 @@
         Priority scheduling = 4
     },  # end of ioqueue spec 
     Cache = disksim_cachedev { 
-        Cache block size = 8,
-        Cache set assoc =  512, 
-        Cache size = 104857600,       # 50G
+        Cache block size = 512,     # 一个缓存块大小为 256K
+        Cache set assoc = 8, 
+        Cache size = 10485760,       # 5G
         Cache policy = 1,
         Cache device = cache_disk,   # device we're caching on
         Cached device = disk,        # device that's being cached

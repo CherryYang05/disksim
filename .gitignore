@@ -1,6 +1,12 @@
 .vscode/
 # valid/*.trace
-/libparamcopy/
+**/*.a
+**/*.o
+**/*.d
+**/*.tex
+**/*.c~
+
+# /libparamcopy/
 valid/*
 !valid/*.parv
 !valid/*.sh

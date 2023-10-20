@@ -469,7 +469,7 @@ void iodriver_access_complete(int iodriverno, intr_event *intrp) {
 
     gettimeofday(&startTime, NULL);
     FILE *outputFile;
-    outputFile = fopen("driver_response.txt", "a+");
+    outputFile = fopen("hdd-speed.txt", "a+");
     fprintf(outputFile, "%f ,opid %d, blkno %d, bcount %d %d\n", req->responsetime, req->opid, req->blkno, req->bcount, req->flags);
     fclose(outputFile);
     gettimeofday(&endTime, NULL);
@@ -810,9 +810,9 @@ void iodriver_trace_request_start(int iodriverno, ioreq_event *curr) {
     double tdiff = simtime - currdev->lastevent;
 
     if (currdev->flag == 1) {
-        stat_update(&initiatenextstats, tdiff);
+        stat_update(&initiatenextstats, tdiff, curr->flags);
     } else if (currdev->flag == 2) {
-        stat_update(&emptyqueuestats, tdiff);
+        stat_update(&emptyqueuestats, tdiff, curr->flags);
     }
     currdev->flag = 0;
 
