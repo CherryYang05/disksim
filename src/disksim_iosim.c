@@ -478,17 +478,18 @@ void io_validate_do_stats1() {
             validatebuf[i] = 0;
         }
     } else {
-        stat_update(tracestats3, (validate_lastserv - disksim->lastphystime));
+        stat_update(tracestats3, (validate_lastserv - disksim->lastphystime), -1);
         if (!validate_lastread) {
-            stat_update(tracestats5, (validate_lastserv - disksim->lastphystime));
+            stat_update(tracestats5, (validate_lastserv - disksim->lastphystime), -1);
         }
     }
 }
 
 void io_validate_do_stats2(ioreq_event *new_event) {
-    stat_update(tracestats2, validate_lastserv);
+    stat_update(tracestats2, validate_lastserv, -1);
+    // printf("t = %f\n", validate_lastserv);
     if (new_event->flags == WRITE) {
-        stat_update(tracestats4, validate_lastserv);
+        stat_update(tracestats4, validate_lastserv, WRITE);
     }
     if (strcmp(validate_buffaction, "Doub") == 0) {
         validatebuf[0]++;
@@ -550,12 +551,13 @@ void io_map_trace_request(ioreq_event *temp) {
             temp->bcount *= tracemap3[i];
             temp->blkno += tracemap4[i];
             if (tracestats) {
-                stat_update(&tracestats[i], ((double)temp->tempint1 / (double)1000));
-                stat_update(&tracestats1[i], ((double)(temp->tempint1 + temp->tempint2) / (double)1000));
-                stat_update(&tracestats2[i], ((double)temp->tempint2 / (double)1000));
-                stat_update(&tracestats3[i], (double)temp->slotno);
+                stat_update(&tracestats[i], ((double)temp->tempint1 / (double)1000), -1);
+                stat_update(&tracestats1[i], ((double)(temp->tempint1 + temp->tempint2) / (double)1000), -1);
+                stat_update(&tracestats2[i], ((double)temp->tempint2 / (double)1000), -1);
+                printf("time = %f\n", ((double)temp->tempint2 / (double)1000));
+                stat_update(&tracestats3[i], (double)temp->slotno, -1);
                 if (temp->slotno == 1) {
-                    stat_update(&tracestats4[i], ((double)temp->tempint1 / (double)1000));
+                    stat_update(&tracestats4[i], ((double)temp->tempint1 / (double)1000), WRITE);
                 }
             }
             return;
@@ -568,7 +570,7 @@ void io_map_trace_request(ioreq_event *temp) {
 }
 
 /**
- * Cherry: 读取每一条 trace
+ * Cherry: 读取第一条 trace
  */
 event *io_get_next_external_event(FILE *iotracefile) {
     ioreq_event *temp;
@@ -593,7 +595,7 @@ event *io_get_next_external_event(FILE *iotracefile) {
             break;
     }
 
-    // Cherry: 从 trace 文件中读取每一个 trace
+    // Cherry: 从 trace 文件中读取第一条 trace
     temp = iotrace_get_ioreq_event(iotracefile, disksim->traceformat, temp);
     if (temp) {
         switch (disksim->traceformat) {

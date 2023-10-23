@@ -51,7 +51,7 @@ static int ssd_invoke_gang_cleaning(int gang_num, ssd_t *s)
         tmp->flags = SSD_CLEAN_GANG;
         tmp->busno = -1;
         tmp->bcount = -1;
-        stat_update (&s->stat.acctimestats, max_cost);
+        stat_update (&s->stat.acctimestats, max_cost, tmp->flags);
         addtointq ((event *)tmp);
     }
 
@@ -124,7 +124,7 @@ static void ssd_collect_req_in_gang
                 }
             } else {
                 // throw this request -- it doesn't make sense
-                stat_update (&s->stat.acctimestats, 0);
+                stat_update (&s->stat.acctimestats, 0, req->flags);
                 req->time = simtime;
                 req->ssd_elem_num = i;
                 req->ssd_gang_num = gang_num;
@@ -191,7 +191,7 @@ void choose_gang_and_element(int blk, ioreq_event *req, ssd_t *s, int *gang_num,
     return;
 }
 
-double ssd_gang_read_sync(int gang_num, int blkno, int count, ssd_t *s)
+double ssd_gang_read_sync(int gang_num, int blkno, int count, ssd_t *s, ioreq_event *req)
 {
     gang_metadata *g;
     double req_time = 0;
@@ -227,7 +227,7 @@ double ssd_gang_read_sync(int gang_num, int blkno, int count, ssd_t *s)
         // stat
         elem->stat.tot_reqs_issued ++;
         elem->stat.tot_time_taken += acctime;
-        stat_update (&s->stat.acctimestats, acctime);
+        stat_update (&s->stat.acctimestats, acctime, req->flags);
         req_time += acctime;
 
         //printf("Adding gang %d blk %d time %f\n",
@@ -282,7 +282,7 @@ static void ssd_activate_gang_sync(int gang_num, ssd_t *s)
         // if this is a read request, issue it simply
         if (req->flags & READ) {
             g->busy = TRUE;
-            req_time = ssd_gang_read_sync(gang_num, req->blkno, req->bcount, s);
+            req_time = ssd_gang_read_sync(gang_num, req->blkno, req->bcount, s, req);
 
             // add an event for request completion
             req->time = simtime + req_time;
@@ -367,7 +367,7 @@ static void ssd_activate_gang_sync(int gang_num, ssd_t *s)
                 acctime = read_time + elem_req[0]->acctime;
                 elem->stat.tot_reqs_issued ++;
                 elem->stat.tot_time_taken += acctime;
-                stat_update (&s->stat.acctimestats, acctime);
+                stat_update (&s->stat.acctimestats, acctime, req->flags);
                 req_time += xfertime;
 
                 // see if a summary page was written
@@ -451,7 +451,7 @@ static void _ssd_activate_gang
                 elem->stat.tot_time_taken += reqs_queue[i][0]->acctime;
 
                 // add an event for request completion
-                stat_update (&s->stat.acctimestats, reqs_queue[i][0]->acctime);
+                stat_update (&s->stat.acctimestats, reqs_queue[i][0]->acctime, reqs_queue[i][0]->org_req->flags);
                 reqs_queue[i][0]->org_req->time = simtime + after + reqs_queue[i][0]->acctime;
                 reqs_queue[i][0]->org_req->type = DEVICE_ACCESS_COMPLETE;
                 reqs_queue[i][0]->org_req->ssd_elem_num = elem_num;

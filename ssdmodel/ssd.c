@@ -426,7 +426,7 @@ static int ssd_invoke_element_cleaning(int elem_num, ssd_t *s)
         tmp->flags = SSD_CLEAN_ELEMENT;
         tmp->busno = -1;
         tmp->bcount = -1;
-        stat_update (&s->stat.acctimestats, max_cost);
+        stat_update (&s->stat.acctimestats, max_cost, tmp->flags);
         addtointq ((event *)tmp);
 
         // stat
@@ -539,7 +539,7 @@ static void ssd_activate_elem(ssd_t *currdisk, int elem_num)
                 }
             } else {
                 // throw this request -- it doesn't make sense
-                stat_update (&currdisk->stat.acctimestats, 0);
+                stat_update (&currdisk->stat.acctimestats, 0, req->flags);
                 req->time = simtime;
                 req->ssd_elem_num = elem_num;
                 req->type = DEVICE_ACCESS_COMPLETE;
@@ -562,7 +562,7 @@ static void ssd_activate_elem(ssd_t *currdisk, int elem_num)
                   schtime = read_reqs[i]->schtime;
               }
 
-              stat_update (&currdisk->stat.acctimestats, read_reqs[i]->acctime);
+              stat_update (&currdisk->stat.acctimestats, read_reqs[i]->acctime, req->flags);
               read_reqs[i]->org_req->time = simtime + read_reqs[i]->schtime;
               read_reqs[i]->org_req->ssd_elem_num = elem_num;
               read_reqs[i]->org_req->type = DEVICE_ACCESS_COMPLETE;
@@ -589,7 +589,7 @@ static void ssd_activate_elem(ssd_t *currdisk, int elem_num)
             for (i = 0; i < write_total; i ++) {
               elem->media_busy = TRUE;
 
-              stat_update (&currdisk->stat.acctimestats, write_reqs[i]->acctime);
+              stat_update (&currdisk->stat.acctimestats, write_reqs[i]->acctime, req->flags);
               write_reqs[i]->org_req->time = simtime + schtime + write_reqs[i]->schtime;
               //printf("blk %d elem %d acc time %f\n", write_reqs[i]->blk, elem_num, write_reqs[i]->acctime);
 

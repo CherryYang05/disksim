@@ -826,7 +826,7 @@ dm_disk IBM_DNES-309170W_validate_model {
       Access time type = trackSwitchPlusRotation,
       Seek type = extracted,
       Single cylinder seek time = 1.086000,
-      Full seek curve = ibm18es.seek,
+      Full seek curve = seagate1.4.seek,
       Full strobe seek time = 12.742000,
       Add. write settling delay = 0.126000,
 #      First ten seek times = [

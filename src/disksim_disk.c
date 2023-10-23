@@ -1105,10 +1105,10 @@ void disk_initialize (void)
 
 
 void disk_acctimestats (disk *currdisk, int distance, double seektime,
-        double latency, double xfertime, double acctime)
+        double latency, double xfertime, double acctime, diskreq *currdiskreq)
 {
     int dist;
-
+    ioreq_event *tmp = currdiskreq->ioreqlist;
 #ifdef DEBUG_DISK
     fprintf( outputfile, "********* %f: disk_acctimestats   currdisk %p, Seek: distance %d, time %f, latency %f, xfertime %f, acctime %f\n", simtime, currdisk, distance, seektime, latency, xfertime, acctime );
     fflush( outputfile );
@@ -1119,21 +1119,21 @@ void disk_acctimestats (disk *currdisk, int distance, double seektime,
         if (dist == 0) {
             currdisk->stat.zeroseeks++;
         }
-        stat_update(&currdisk->stat.seekdiststats, (double) dist);
-        stat_update(&currdisk->stat.seektimestats, seektime);
+        stat_update(&currdisk->stat.seekdiststats, (double) dist, tmp->flags);
+        stat_update(&currdisk->stat.seektimestats, seektime, tmp->flags);
     }
     if (device_printlatencystats == TRUE) {
         if (latency == (double) 0.0) {
             currdisk->stat.zerolatency++;
         }
-        stat_update(&currdisk->stat.rotlatstats, latency);
+        stat_update(&currdisk->stat.rotlatstats, latency, tmp->flags);
     }
     if (device_printxferstats == TRUE) {
-        stat_update(&currdisk->stat.xfertimestats, xfertime);
+        stat_update(&currdisk->stat.xfertimestats, xfertime, tmp->flags);
     }
     if (device_printacctimestats == TRUE) {
-        stat_update(&currdisk->stat.postimestats, (seektime+latency));
-        stat_update(&currdisk->stat.acctimestats, acctime);
+        stat_update(&currdisk->stat.postimestats, (seektime+latency), tmp->flags);
+        stat_update(&currdisk->stat.acctimestats, acctime, tmp->flags);
     }
 }
 

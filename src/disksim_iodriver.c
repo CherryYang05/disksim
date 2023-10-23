@@ -810,9 +810,9 @@ void iodriver_trace_request_start(int iodriverno, ioreq_event *curr) {
     double tdiff = simtime - currdev->lastevent;
 
     if (currdev->flag == 1) {
-        stat_update(&initiatenextstats, tdiff);
+        stat_update(&initiatenextstats, tdiff, curr->flags);
     } else if (currdev->flag == 2) {
-        stat_update(&emptyqueuestats, tdiff);
+        stat_update(&emptyqueuestats, tdiff, curr->flags);
     }
     currdev->flag = 0;
 

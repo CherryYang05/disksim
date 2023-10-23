@@ -107,14 +107,18 @@
 #define DISTSIZE	10
 
 typedef struct {
-   int     count;
+   int     count;                // 请求数量
+   int     readcount;            // 读请求数量
+   int     writecount;           // 写请求数量
    char   *statdesc;
    FILE   *statfile;
    char    space[4];
    int     scale;
    int     equals;
    double  maxval;
-   double  runval;
+   double  runval;               // 总延迟
+   double  readrunval;           // 读操作总延迟
+   double  writerunval;          // 写操作总延迟
    double  runsquares;
    int    *largedistvals;
    int    *largediststarts;
@@ -127,7 +131,7 @@ typedef struct {
 
 void   stat_initialize (FILE *statdef_file, char *statdesc, statgen *statptr);
 void   stat_reset (statgen *statptr);
-void   stat_update (statgen *statptr, double value);
+void   stat_update (statgen *statptr, double value, int rw);
 int    stat_get_count (statgen *statptr);
 double stat_get_runval (statgen *statptr);
 void   stat_print (statgen *statptr, char *identstr);

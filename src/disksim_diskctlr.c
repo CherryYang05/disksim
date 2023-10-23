@@ -3142,7 +3142,7 @@ disk_buffer_request_complete(disk *currdisk, diskreq *currdiskreq) {
 
             disk_acctimestats(currdisk, currdisk->stat.seekdistance,
                               currdisk->stat.seektime, currdisk->stat.latency,
-                              currdisk->stat.xfertime, acctime);
+                              currdisk->stat.xfertime, acctime, currdiskreq);
         }
 
         tmpioreq = currdiskreq->ioreqlist;

@@ -825,25 +825,25 @@
       Mechanical Model = dm_mech_g1 {
          Access time type = trackSwitchPlusRotation,
          Seek type = extracted,
-  Single cylinder seek time =  0.835385, 
- Full seek curve =  seagate1.3.seek, 
- Full strobe seek time = 9.801538, 
- Add. write settling delay = 0.096923, 
-  #      First ten seek times = [
-   #         1.090000,
-   #         1.480000,
-   #         1.570000,
-   #         1.580000,
-   #         1.700000,
-   #         1.780000,
-   #         1.730000,
-   #         1.730000,
-   #         1.750000,
-   #         1.770000
-   #      ],
-  Head switch time = 0.047692, 
-  Rotation speed (in rpms) = 7200, 
-        Percent error in rpms = 0.000000
+         Single cylinder seek time =  0.835385, 
+         Full seek curve =  seagate0.8.seek, 
+         Full strobe seek time = 9.801538, 
+         Add. write settling delay = 0.096923, 
+       # First ten seek times = [
+            # 1.090000,
+            # 1.480000,
+            # 1.570000,
+            # 1.580000,
+            # 1.700000,
+            # 1.780000,
+            # 1.730000,
+            # 1.730000,
+            # 1.750000,
+            # 1.770000
+         # ],
+         Head switch time = 0.047692, 
+         Rotation speed (in rpms) = 7200, 
+         Percent error in rpms = 0.000000
       }
    } # end of IBM_DNES-309170W_validate_model spec
    

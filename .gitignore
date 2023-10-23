@@ -1,6 +1,18 @@
 .vscode/
 # valid/*.trace
-/libparamcopy/
+**/.DS_Store
+w32build/*
+**/*.a
+**/*.o
+**/*.d
+**/*.tex
+**/*.c~
+disksim_4.0_64bit.patch
+doxygen.cfg
+COPYING
+WDREADME.txt
+
+# /libparamcopy/
 valid/*
 !valid/*.parv
 !valid/*.sh

@@ -682,7 +682,7 @@ int disk_setup_mapping(struct disk *d);
 
 
 void disk_acctimestats (disk *currdisk, int distance, double seektime,
-		        double latency, double xfertime, double acctime);
+		        double latency, double xfertime, double acctime, diskreq *currdiskreq);
 
 int disk_load_syncsets(struct lp_block *b);
 

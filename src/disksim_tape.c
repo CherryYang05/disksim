@@ -353,9 +353,8 @@ static void simpledisk_bustransfer_complete(ioreq_event *curr) {
 
         /* do media access */
         currdisk->media_busy = TRUE;
-        stat_update(&currdisk->stat.acctimestats, currdisk->acctime);
+        stat_update(&currdisk->stat.acctimestats, currdisk->acctime, curr->flags);
         curr->time = simtime + simpledisk_get_servtime(curr->devno, curr, 0, 0);
-        ;
         curr->type = DEVICE_ACCESS_COMPLETE;
         addtointq((event *)curr);
     }
@@ -425,7 +424,7 @@ static void simpledisk_request_arrive(ioreq_event *curr) {
         if (curr->flags & READ) {
             ioreq_event *tmp = ioreq_copy(curr);
             currdisk->media_busy = TRUE;
-            stat_update(&currdisk->stat.acctimestats, currdisk->acctime);
+            stat_update(&currdisk->stat.acctimestats, currdisk->acctime, curr->flags);
             tmp->time = simtime + simpledisk_get_servtime(curr->devno, curr, 0, 1);
             tmp->type = DEVICE_ACCESS_COMPLETE;
             addtointq((event *)tmp);
@@ -521,7 +520,7 @@ static void simpledisk_completion_done(ioreq_event *curr) {
         ASSERT(currdisk->media_busy == FALSE);
         if (curr->flags & READ) {
             currdisk->media_busy = TRUE;
-            stat_update(&currdisk->stat.acctimestats, currdisk->acctime);
+            stat_update(&currdisk->stat.acctimestats, currdisk->acctime, curr->flags);
             curr->time = simtime + currdisk->acctime;
             curr->type = DEVICE_ACCESS_COMPLETE;
             addtointq((event *)curr);

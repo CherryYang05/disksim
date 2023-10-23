@@ -119,7 +119,14 @@ double stat_get_runval(statgen *statptr) {
     return (statptr->runval);
 }
 
-void stat_update(statgen *statptr, double value) {
+/**
+ * @brief 更新每个 statgen 结构体，记录延迟
+ * 
+ * @param statptr   statgen 指针
+ * @param value     延迟
+ * @param rw        将读写记录做区分
+ */
+void stat_update(statgen *statptr, double value, int rw) {
     int i = 0;
     int start = statptr->distbrks[0];
     int step = statptr->distbrks[1];
@@ -144,12 +151,20 @@ void stat_update(statgen *statptr, double value) {
     // ******************************
 
     statptr->count++;
+    statptr->runval += value;
+    // 单独记录读写请求
+    if (rw == READ) {
+        statptr->readcount++;
+        statptr->readrunval += value;
+    } else if (rw == WRITE) {
+        statptr->writecount++;
+        statptr->writerunval += value;
+    }
+    statptr->runsquares += (value * value);
 
     if (statptr->maxval < value) {
         statptr->maxval = value;
     }
-    statptr->runval += value;
-    statptr->runsquares += (value * value);
 
     // if (!strcmp(statptr->statdesc, "Response time")) {
     //     printf("statptr = %p, %s value = %f\n", statptr, statptr->statdesc, value);
@@ -304,10 +319,11 @@ void stat_print_file(statgen *statptr, char *identstr, FILE *outfile) {
 
 /**
  * @brief 在 outv 文件中打印结果
- *
- * @param statset
- * @param statcnt
- * @param identstr
+ * ADD | Cherry: 新增打印读写平均延迟
+ * 
+ * @param statset 
+ * @param statcnt 
+ * @param identstr 
  */
 void stat_print_set(statgen **statset, int statcnt, char *identstr) {
     int i, j;
@@ -317,11 +333,17 @@ void stat_print_set(statgen **statset, int statcnt, char *identstr) {
     int buckets = statptr->distbrks[(DISTSIZE - 1)];
     int intval = statptr->distbrks[(DISTSIZE - 2)];
     double runval = 0.0;
+    double readrunval = 0.0;
+    double writerunval = 0.0;
     double runsquares = 0.0;
-    double avg = 0.0;
+    double avg = 0.0;               // 总平均延迟
+    double ravg = 0.0;              // 读平均延迟
+    double wavg = 0.0;              // 写平均延迟
     double maxval = statptr->maxval;
     double scale = (double)statptr->scale;
     int runcount = 0;
+    int readruncount = 0;
+    int writeruncount = 0;
     int smalldistvals[DISTSIZE];
     char distchar = '=';
 
@@ -333,8 +355,12 @@ void stat_print_set(statgen **statset, int statcnt, char *identstr) {
         statptr = statset[i];
         if (statptr->count > 0) {
             runcount += statptr->count;
-            runval += statptr->runval;
+            readruncount += statptr->readcount;
+            writeruncount += statptr->writecount;
 
+            runval += statptr->runval;
+            readrunval += statptr->readrunval;
+            writerunval += statptr->writerunval;
             // **********************************
             // if (!strcmp(identstr, "IOdriver ") && !strcmp(statdesc, "Response time")) {
             //     printf("statptr->count = %d\n", statptr->count);
@@ -360,7 +386,12 @@ void stat_print_set(statgen **statset, int statcnt, char *identstr) {
     // **********************************
 
     if (runcount > 0) {
+        // 总平均延迟
         avg = runval / (double)runcount;
+        // 读平均延迟
+        ravg = readrunval / (double) readruncount;
+        // 写平均延迟
+        wavg = writerunval / (double) writeruncount;
         // 方差
         runsquares = (runsquares / (double)runcount) - (avg * avg);
         // 标准差
@@ -369,6 +400,8 @@ void stat_print_set(statgen **statset, int statcnt, char *identstr) {
         runsquares = 0.0;
     }
     fprintf(outputfile, "%s%s average: \t\t%f\n", identstr, statdesc, avg);
+    fprintf(outputfile, "%s%s read average: \t%f\n", identstr, statdesc, ravg);
+    fprintf(outputfile, "%s%s write average: \t%f\n", identstr, statdesc, wavg);
 
     // ADD: Delay Fluctuation 时延波动计算
     double delay_fluctuation = 0.0;
@@ -528,7 +561,11 @@ void stat_initialize(FILE *statdef_file, char *statdesc, statgen *statptr) {
     }
 
     statptr->count = 0;
+    statptr->readcount = 0;
+    statptr->writecount = 0;
     statptr->runval = 0.0;
+    statptr->readrunval = 0.0;
+    statptr->writerunval = 0.0;
     statptr->runsquares = 0.0;
     statptr->maxval = 0.0;
     statptr->statdesc = (char *)DISKSIM_malloc(strlen(statdesc) + 1);

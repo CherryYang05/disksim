@@ -305,13 +305,13 @@ event * pf_io_done_notify (ioreq_event *curr, void *ctx)
    }
 
    if (curr->flags & TIME_CRITICAL) {
-      stat_update(&timecritrespstats, (simtime - tmp->time));
+      stat_update(&timecritrespstats, (simtime - tmp->time), curr->flags);
    } 
    else if (curr->flags & TIME_LIMITED) {
-      stat_update(&timelimitrespstats, (simtime - tmp->time));
+      stat_update(&timelimitrespstats, (simtime - tmp->time), curr->flags);
    } 
    else {
-      stat_update(&timenoncritrespstats, (simtime - tmp->time));
+      stat_update(&timenoncritrespstats, (simtime - tmp->time), curr->flags);
    }
 
    if (!(curr->flags & TIME_LIMITED) || (tmpwake)) {
@@ -347,9 +347,9 @@ static int pf_iowait (void *chan, process *procp)
             prev->next = tmp->next;
          }
          if (tmp->flags & READ) {
-            stat_update(&procp->readtimelimitstats, (simtime - tmp->time));
+            stat_update(&procp->readtimelimitstats, (simtime - tmp->time), tmp->flags);
          } else {
-            stat_update(&procp->writetimelimitstats, (simtime - tmp->time));
+            stat_update(&procp->writetimelimitstats, (simtime - tmp->time), tmp->flags);
          }
          addtoextraq((event *) tmp);
       }
@@ -362,11 +362,11 @@ static int pf_iowait (void *chan, process *procp)
 
    if (tmp->flags & TIME_LIMITED) {
       if (tmp->flags & READ) {
-         stat_update(&procp->readtimelimitstats, (simtime - tmp->time));
-         stat_update(&procp->readmisslimitstats, (simtime - tmp->time));
+         stat_update(&procp->readtimelimitstats, (simtime - tmp->time), tmp->flags);
+         stat_update(&procp->readmisslimitstats, (simtime - tmp->time), tmp->flags);
       } else {
-         stat_update(&procp->writetimelimitstats, (simtime - tmp->time));
-         stat_update(&procp->writemisslimitstats, (simtime - tmp->time));
+         stat_update(&procp->writetimelimitstats, (simtime - tmp->time), tmp->flags);
+         stat_update(&procp->writemisslimitstats, (simtime - tmp->time), tmp->flags);
       }
    }
    tmp->flags |= PF_BUF_WANTED;
