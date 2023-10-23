@@ -469,7 +469,7 @@ void iodriver_access_complete(int iodriverno, intr_event *intrp) {
 
     gettimeofday(&startTime, NULL);
     FILE *outputFile;
-    outputFile = fopen("hdd-speed.txt", "a+");
+    outputFile = fopen("driver_response.txt", "a+");
     fprintf(outputFile, "%f ,opid %d, blkno %d, bcount %d %d\n", req->responsetime, req->opid, req->blkno, req->bcount, req->flags);
     fclose(outputFile);
     gettimeofday(&endTime, NULL);
